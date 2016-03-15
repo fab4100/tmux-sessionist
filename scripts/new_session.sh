@@ -3,7 +3,12 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # global variable
+if [ "$#" -ne 2 ]; then
+    echo "Need 2 args (session_name & session_path)"
+    exit 0
+fi
 SESSION_NAME="$1"
+SESSION_PATH="$2"
 
 source "$CURRENT_DIR/helpers.sh"
 
@@ -18,7 +23,7 @@ create_new_tmux_session() {
 		switch_to_session "$SESSION_NAME"
 		display_message "Switched to existing session ${SESSION_NAME}" "2000"
 	else
-		TMUX="" tmux -S "$(tmux_socket)" new-session -d -s "$SESSION_NAME"
+		TMUX="" tmux -S "$(tmux_socket)" new-session -d -s "$SESSION_NAME" -c "$SESSION_PATH"
 		switch_to_session "$SESSION_NAME"
 	fi
 }
